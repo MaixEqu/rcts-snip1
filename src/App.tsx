@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const sVersion = "ver 0.1.3 (J2K)";
+const sVersion = "ver 0.1.4 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -17,14 +17,14 @@ export class Main extends Component {
   }
 }
 
-const sGetDataX = async (path: string) => {
+const sGetDataX = async (path: string, callback: Function) => {
   console.log("async X: " + path)
   try {
     const response = await fetch(path);
     const text = await response.text();
-    console.log("X: " + text);
+    //console.log("X: " + text);
     //this.setState({text_s: text});
-    //callback(text)
+    callback(text)
   } catch(error) {
     console.error(error);
   }
@@ -42,19 +42,24 @@ interface IProps {
   height_p?: string
 }
 export class TextAreas extends React.Component<IProps, IState> {
-  state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
-  sFile = this.props.file_p || '2.txt'
+  // state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
+  // sFile = this.props.file_p || '2.txt'
   constructor(props: IProps) {
     super(props);
-    //const sFile = props.file_p || '1.txt'
-    //this.sGetData(location.href + '/data/' + this.sFile);
-    sGetDataX(location.href + '/data/' + this.sFile);
     this.handleTextChange = this.handleTextChange.bind(this);
+    this.setCompState = this.setCompState.bind(this)
+    this.state = {text_s: "hello to Mx 1", height_s: '250', width_s: '580'};
+    const sFile = props.file_p || '1.txt'
+    //this.sGetData(location.href + '/data/' + this.sFile);
+    sGetDataX(location.href + '/data/' + sFile, this.setCompState);
     // this.state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
   }
-  setCompState() {
-    console.log("inner func...");
-    this.setState({'text_s': "asdjfl !!!"})
+  setCompState(t: string) {
+    console.log("inner func: " + t);
+    console.log(this);
+    //this.state = {text_s: "hello to Mx 2", height_s: '250', width_s: '580'};
+
+    this.setState({text_s: "inner: " + t})
   }
 
   sGetData = async (path: string) => {
