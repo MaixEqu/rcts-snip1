@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const sVersion = "ver 0.1.0 (J2K)";
+const sVersion = "ver 0.1.1 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -10,6 +10,7 @@ export class Main extends Component {
         <header className="App-header">
           <div id="verinfo">{sVerInfo}</div>
           <div id="textareas">textareas</div>
+          <div id="textareas2">textareas</div>
         </header>
       </div>
     );
@@ -22,14 +23,16 @@ interface IState {
   height_s?: string
 }
 interface IProps {
-  text_p?: string;
+  file_p?: string
+  text_p?: string
   width_p?: string
   height_p?: string
 }
 export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.sGetData(location.href + '/data/1.txt');
+    const sFile = props.file_p || '1.txt'
+    this.sGetData(location.href + '/data/' + sFile);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
   }
