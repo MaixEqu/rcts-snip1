@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const sVersion = "ver 0.1.2 (J2K)";
+const sVersion = "ver 0.1.3 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -14,6 +14,19 @@ export class Main extends Component {
         </header>
       </div>
     );
+  }
+}
+
+const sGetDataX = async (path: string) => {
+  console.log("async X: " + path)
+  try {
+    const response = await fetch(path);
+    const text = await response.text();
+    console.log("X: " + text);
+    //this.setState({text_s: text});
+    //callback(text)
+  } catch(error) {
+    console.error(error);
   }
 }
 
@@ -34,7 +47,8 @@ export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     //const sFile = props.file_p || '1.txt'
-    this.sGetData(location.href + '/data/' + this.sFile);
+    //this.sGetData(location.href + '/data/' + this.sFile);
+    sGetDataX(location.href + '/data/' + this.sFile);
     this.handleTextChange = this.handleTextChange.bind(this);
     // this.state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
   }
