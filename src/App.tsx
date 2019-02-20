@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const sVersion = "ver 0.1.4 (J2K)";
+const sVersion = "ver 0.1.5 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -34,6 +34,7 @@ interface IState {
   text_s: string
   width_s?: string
   height_s?: string
+  stage_s?: number
 }
 interface IProps {
   file_p?: string
@@ -52,14 +53,15 @@ export class TextAreas extends React.Component<IProps, IState> {
     const sFile = props.file_p || '1.txt'
     //this.sGetData(location.href + '/data/' + this.sFile);
     sGetDataX(location.href + '/data/' + sFile, this.setCompState);
-    // this.state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
+    this.state = {text_s: "hello to Mx\n", stage_s: 0, height_s: '250', width_s: '580'};
+    //this.state = {text_s: '', level_s: 2}
   }
   setCompState(t: string) {
     console.log("inner func: " + t);
     console.log(this);
     //this.state = {text_s: "hello to Mx 2", height_s: '250', width_s: '580'};
-
-    this.setState({text_s: "inner: " + t})
+    const nStage = this.state.stage_s || 0
+    this.setState({text_s: "inner: " + t, stage_s: nStage+1})
   }
 
   sGetData = async (path: string) => {
@@ -89,7 +91,7 @@ export class TextAreas extends React.Component<IProps, IState> {
     return (
       <>
         <hr />
-        <p>In the textarea symbols: [{this.state.text_s.length}]</p>
+        <p>Stage: ({this.state.stage_s}). In the textarea symbols: [{this.state.text_s.length}]</p>
         <hr />
         <fieldset>
           <legend>4 Enter text:</legend>
