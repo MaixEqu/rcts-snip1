@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const sVersion = "ver 0.1.5 (J2K)";
+const sVersion = "ver 0.9.9 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -24,17 +24,20 @@ const sGetDataX = async (path: string, callback: Function) => {
     const text = await response.text();
     //console.log("X: " + text);
     //this.setState({text_s: text});
-    callback(text)
+    callback(path, text)
   } catch(error) {
     console.error(error);
   }
 }
+
+let sFData = "no data";
 
 interface IState {
   text_s: string
   width_s?: string
   height_s?: string
   stage_s?: number
+  text2_s?: string
 }
 interface IProps {
   file_p?: string
@@ -43,38 +46,35 @@ interface IProps {
   height_p?: string
 }
 export class TextAreas extends React.Component<IProps, IState> {
-  // state = {text_s: "hello to Mx\n", height_s: '250', width_s: '580'};
-  // sFile = this.props.file_p || '2.txt'
   constructor(props: IProps) {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
-    this.setCompState = this.setCompState.bind(this)
+    this.setTAText = this.setTAText.bind(this)
+    this.setTAText2 = this.setTAText2.bind(this)
     this.state = {text_s: "hello to Mx 1", height_s: '250', width_s: '580'};
     const sFile = props.file_p || '1.txt'
     //this.sGetData(location.href + '/data/' + this.sFile);
-    sGetDataX(location.href + '/data/' + sFile, this.setCompState);
+    //sGetDataX(location.href + '/data/' + sFile, this.setTAText);
+    sGetDataX(location.href + '/data/' + '2.txt', this.setTAText);
+    sGetDataX(location.href + '/data/' + '1.txt', this.setTAText2);
     this.state = {text_s: "hello to Mx\n", stage_s: 0, height_s: '250', width_s: '580'};
     //this.state = {text_s: '', level_s: 2}
   }
-  setCompState(t: string) {
-    console.log("inner func: " + t);
-    console.log(this);
-    //this.state = {text_s: "hello to Mx 2", height_s: '250', width_s: '580'};
+
+  setTAText(path: string, text: string) {
+    console.log("infunc1: " + path + " done.");
     const nStage = this.state.stage_s || 0
-    this.setState({text_s: "inner: " + t, stage_s: nStage+1})
+    this.setState({text_s: "inner1: " + text, stage_s: nStage+1})
+    const sMsg = (this.state.stage_s && this.state.stage_s >= 2) ? " ALL data" : "waiting more..."
+    console.log(sMsg);
   }
 
-  sGetData = async (path: string) => {
-    console.log("async: " + path)
-    try {
-      const response = await fetch(path);
-      const text = await response.text();
-      //console.log(text);
-      this.setState({text_s: text});
-      //callback(text)
-    } catch(error) {
-      console.error(error);
-    }
+  setTAText2(path: string, text: string) {
+    console.log("infunc2: " + path + " done.");
+    const nStage = this.state.stage_s || 0
+    this.setState({text2_s: "inner2: " + text, stage_s: nStage+1})
+    const sMsg = (this.state.stage_s && this.state.stage_s >= 2) ? " ALL data" : "waiting more..."
+    console.log(sMsg);
   }
 
   handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -101,7 +101,7 @@ export class TextAreas extends React.Component<IProps, IState> {
           />
           </div>
         </fieldset>
-        {"===>"}<br /><h4>{this.state.text_s}</h4><br />{"<==="}
+        {"===>"}<br /><h4>{this.state.text2_s}</h4><br />{"<==="}
       </>
     );
   }
